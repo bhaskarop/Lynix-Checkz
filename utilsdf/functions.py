@@ -80,7 +80,7 @@ async def anti_bots_telegram(m: Message, client: Client):
 
 
 async def two_captcha(api_key, url, site_key, en):
-    async with AsyncClient(follow_redirects=True, verify=False) as session:
+    async with AsyncClient(follow_redirects=True, verify=False, timeout=30) as session:
         if en:
             url = f"https://2captcha.com/in.php?key={api_key}&method=userrecaptcha&googlekey={site_key}&pageurl={url}&enterprise=1"
         else:
@@ -113,7 +113,7 @@ async def two_captcha(api_key, url, site_key, en):
 
 
 async def solve_captcha(api_key, url, captcha_key):
-    async with AsyncClient(follow_redirects=True, verify=False) as session:
+    async with AsyncClient(follow_redirects=True, verify=False, timeout=30) as session:
         h = {
             "Accept": "application/json",
             "Content-Type": "application/json",
@@ -271,7 +271,7 @@ def get_bin_info_of_database(bin: str) -> dict | None:
 # refactorizar
 async def get_bin_info(bin: str) -> dict | None:
     bin = bin[0:6]
-    async with AsyncClient(follow_redirects=True, verify=False) as s:
+    async with AsyncClient(follow_redirects=True, verify=False, timeout=30) as s:
         response = await s.get(
             f"https://bincheck.io/details/{bin}",
         )
@@ -297,7 +297,7 @@ async def get_bin_info(bin: str) -> dict | None:
 
 async def get_extras(bin: str) -> dict | None:
     bin = bin[0:6]
-    async with AsyncClient(follow_redirects=True, verify=False) as client:
+    async with AsyncClient(follow_redirects=True, verify=False, timeout=30) as client:
         response = await client.get(
             "https://akatsukichk.com/api/extra/index.php", params={"bin": bin}
         )
@@ -381,7 +381,7 @@ async def get_rand_info(country: str) -> dict | bool:
     countrys = json.load(open("assets/countrys.json", "r"))
     if country not in countrys:
         return False
-    async with AsyncClient(follow_redirects=True, verify=False) as s:
+    async with AsyncClient(follow_redirects=True, verify=False, timeout=30) as s:
         response = await s.get(
             "https://sachio.itbbarquisimeto.com/aa/rnd/rnd2.php",
             params={"domain": country},
@@ -403,7 +403,7 @@ async def get_info_sk(key) -> dict | None:
         "authorization": f"Basic {key}",
     }
 
-    async with AsyncClient(follow_redirects=True, verify=False) as client:
+    async with AsyncClient(follow_redirects=True, verify=False, timeout=30) as client:
         response = await client.get(url, headers=headers)
         try:
             if not response.text or response.text.strip() == "":
@@ -472,7 +472,7 @@ async def user_not_premium(m: Message) -> Message:
 
 
 async def adyen_encrypt(v, cc, month, year, cvv, key):
-    async with AsyncClient(follow_redirects=True, verify=False) as session:
+    async with AsyncClient(follow_redirects=True, verify=False, timeout=30) as session:
         p = {
             "card": f"{cc}|{month}|{year}|{cvv}",
             "adyen_key": key,

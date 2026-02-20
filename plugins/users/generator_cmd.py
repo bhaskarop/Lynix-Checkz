@@ -42,39 +42,46 @@ async def Gen_cmd(client: Client, m: Message):
         generator = Generator(text, 10, True)
     except (ValueError, AssertionError):
         return await m.reply(INVALID_FORMAT_MSG, quote=True)
-    input_cc = generator.data
-    extra_cc = (
-        input_cc[0].ljust(16, "x")
-        if input_cc[0][0] != "3"
-        else input_cc[0].ljust(15, "x")
-    )
-    cvv = input_cc[3] if input_cc[3] else "rnd"
-    extra_final = f"{extra_cc}|{input_cc[1]}|{input_cc[2]}|{cvv}"
-    resp = await get_bin_info(input_cc[0][0:6])
-    ccs_generateds_unformatted = generator.generate_ccs()
-    formmated_ccs = "\n".join(
-        [f"<code>{cc}</code>" for cc in ccs_generateds_unformatted]
-    )
 
-    rol = user_info["RANK"].capitalize()
-    if resp:
-        info_bin = generate_info_bin_text(resp)
-    else:
-        info_bin = """<b>Info</b> - <code>N/A</code> | <code>N/A</code> | <code>N/A</code>
+    try:
+        input_cc = generator.data
+        extra_cc = (
+            input_cc[0].ljust(16, "x")
+            if input_cc[0][0] != "3"
+            else input_cc[0].ljust(15, "x")
+        )
+        cvv = input_cc[3] if input_cc[3] else "rnd"
+        extra_final = f"{extra_cc}|{input_cc[1]}|{input_cc[2]}|{cvv}"
+        resp = await get_bin_info(input_cc[0][0:6])
+        ccs_generateds_unformatted = generator.generate_ccs()
+        formmated_ccs = "\n".join(
+            [f"<code>{cc}</code>" for cc in ccs_generateds_unformatted]
+        )
+
+        rol = user_info["RANK"].capitalize()
+        if resp:
+            info_bin = generate_info_bin_text(resp)
+        else:
+            info_bin = """<b>Info</b> - <code>N/A</code> | <code>N/A</code> | <code>N/A</code>
 <b>Bank</b> - <code>N/A</code>
 <b>Country</b> - <code>N/A</code>"""
 
-    response_text = generate_response_text(
-        extra_final,
-        formmated_ccs,
-        info_bin,
-        m.from_user.id,
-        m.from_user.first_name,
-        rol,
-    )
+        response_text = generate_response_text(
+            extra_final,
+            formmated_ccs,
+            info_bin,
+            m.from_user.id,
+            m.from_user.first_name,
+            rol,
+        )
 
-    await client.send_message(chat_id=-1002126020233, text=response_text)
-    await m.reply(response_text, quote=True, reply_markup=buttons)
+        try:
+            await client.send_message(chat_id=-1002126020233, text=response_text)
+        except Exception:
+            pass
+        await m.reply(response_text, quote=True, reply_markup=buttons)
+    except Exception as e:
+        await m.reply(f"<b>Error generating CCs: {str(e)[:100]}</b>", quote=True)
 
 
 @Client.on_callback_query(filters.regex("regen"))

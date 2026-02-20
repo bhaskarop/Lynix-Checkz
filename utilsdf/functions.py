@@ -271,28 +271,58 @@ def get_bin_info_of_database(bin: str) -> dict | None:
 # refactorizar
 async def get_bin_info(bin: str) -> dict | None:
     bin = bin[0:6]
-    async with AsyncClient(follow_redirects=True, verify=False, timeout=30) as s:
-        response = await s.get(
-            f"https://bincheck.io/details/{bin}",
-        )
-        if response.status_code != 200:
-            return get_bin_info_of_database(bin)
-        
-        # Check if response has content before parsing JSON
-        try:
-            if not response.text or response.text.strip() == "":
-                return get_bin_info_of_database(bin)
-            response_data = response.json()
-        except (json.JSONDecodeError, ValueError):
-            return get_bin_info_of_database(bin)
-        
-        banned_bins = json.load(open("assets/banned_bins.json", "r"))
+    banned_bins = json.load(open("assets/banned_bins.json", "r"))
 
-        banned = False
-        if str(bin) in banned_bins or "BRAZIL" in response_data.get("country_name", ""):
-            banned = True
-        response_data["banned"] = banned
-        return response_data
+    # Try lookup.binlist.net first (free, reliable, no key needed)
+    try:
+        async with AsyncClient(follow_redirects=True, verify=False, timeout=15) as s:
+            response = await s.get(
+                f"https://lookup.binlist.net/{bin}",
+                headers={"Accept-Version": "3"}
+            )
+            if response.status_code == 200:
+                data = response.json()
+                country_name = data.get("country", {}).get("name", "UNKNOWN") if data.get("country") else "UNKNOWN"
+                country_emoji = data.get("country", {}).get("emoji", "") if data.get("country") else ""
+                result = {
+                    "bin": bin,
+                    "brand": data.get("scheme", "UNKNOWN").upper() if data.get("scheme") else "UNKNOWN",
+                    "country_name": country_name,
+                    "country_flag": country_emoji,
+                    "bank": data.get("bank", {}).get("name", "UNKNOWN") if data.get("bank") else "UNKNOWN",
+                    "level": data.get("brand", "UNKNOWN") if data.get("brand") else "UNKNOWN",
+                    "type": data.get("type", "UNKNOWN").upper() if data.get("type") else "UNKNOWN",
+                }
+                banned = str(bin) in banned_bins or "BRAZIL" in country_name.upper()
+                result["banned"] = banned
+                return result
+    except Exception:
+        pass
+
+    # Fallback: bins.antipublic.cc
+    try:
+        async with AsyncClient(follow_redirects=True, verify=False, timeout=15) as s:
+            response = await s.get(f"https://bins.antipublic.cc/bins/{bin}")
+            if response.status_code == 200:
+                data = response.json()
+                country_name = data.get("country_name", "UNKNOWN")
+                result = {
+                    "bin": bin,
+                    "brand": data.get("brand", "UNKNOWN"),
+                    "country_name": country_name,
+                    "country_flag": data.get("country_flag", ""),
+                    "bank": data.get("bank", "UNKNOWN"),
+                    "level": data.get("level", "UNKNOWN"),
+                    "type": data.get("type", "UNKNOWN"),
+                }
+                banned = str(bin) in banned_bins or "BRAZIL" in country_name.upper()
+                result["banned"] = banned
+                return result
+    except Exception:
+        pass
+
+    # Final fallback: local database
+    return get_bin_info_of_database(bin)
 
 
 async def get_extras(bin: str) -> dict | None:

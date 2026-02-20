@@ -22,39 +22,39 @@ from time import perf_counter
 GATE_CONFIG = {
     "stripe": {
         "gate_fn": aktz_gate,
-        "name": "𝙎𝙩𝙧𝙞𝙥𝙚 𝘼𝙪𝙩𝙝",
+        "name": "Stripe Auth",
         "amount": "$0",
         "type": "free",
     },
     "stripe1": {
         "gate_fn": or_gate,
-        "name": "𝙎𝙩𝙧𝙞𝙥𝙚 𝘾𝙝𝙖𝙧𝙜𝙚",
+        "name": "Stripe Charge",
         "amount": "$1",
         "type": "premium",
         "is_or_gate": True,
     },
     "stripe2": {
         "gate_fn": hoshigaki_gate,
-        "name": "𝙎𝙩𝙧𝙞𝙥𝙚 𝘽𝙞𝙡𝙡𝙞𝙣𝙜",
+        "name": "Stripe Billing",
         "amount": "$1",
         "type": "premium",
         "is_raw": True,
     },
     "stripe3": {
         "gate_fn": stripe_50c_gate,
-        "name": "𝙎𝙩𝙧𝙞𝙥𝙚 𝘾𝙝𝙚𝙘𝙠𝙤𝙪𝙩",
+        "name": "Stripe Checkout",
         "amount": "$0.50",
         "type": "premium",
     },
     "stripe4": {
         "gate_fn": stripe_2d_gate,
-        "name": "��𝙩𝙧𝙞𝙥𝙚 𝘽𝙞𝙡𝙡𝙞𝙣𝙜",
+        "name": "Stripe Billing",
         "amount": "$2",
         "type": "premium",
     },
     "stripe5": {
         "gate_fn": stripe_5d_gate,
-        "name": "𝙎𝙩𝙧𝙞𝙥𝙚 𝘾𝙝𝙖𝙧𝙜𝙚",
+        "name": "Stripe Charge",
         "amount": "$5",
         "type": "premium",
     },
@@ -93,8 +93,8 @@ async def stripe_gates_cmd(client: Client, m: Message):
     ccs = get_cc(text)
     if not ccs:
         return await m.reply(
-            f"<b>𝙂𝙖𝙩𝙚𝙬𝙖𝙮 <code>{config['name']} ⚡ -» {config['amount']}</code>\n"
-            f"𝙁𝙤𝙧𝙢𝙖𝙩 -» <code>/{cmd} cc|month|year|cvc</code></b>",
+            f"<b>Gateway:</b> <code>{config['name']} | {config['amount']}</code>\n"
+            f"<b>Format:</b> <code>/{cmd} cc|month|year|cvc</code>",
             quote=True,
         )
 
@@ -105,10 +105,10 @@ async def stripe_gates_cmd(client: Client, m: Message):
     antispam_result = antispam(user_id, user_info["ANTISPAM"], is_free_user)
     if antispam_result != False:
         return await m.reply(
-            f"𝙋𝙡𝙚𝙖𝙨𝙚 𝙒𝙖𝙞𝙩... -» <code>{antispam_result}'s</code>", quote=True
+            f"Please wait... <code>{antispam_result}s</code>", quote=True
         )
 
-    msg_to_edit = await m.reply("𝙋𝙡𝙚𝙖𝙨𝙚 𝙒𝙖𝙞𝙩...", quote=True)
+    msg_to_edit = await m.reply("Checking...", quote=True)
     cc_formatted = f"{cc}|{mes}|{ano}|{cvv}"
 
     try:
@@ -181,16 +181,16 @@ async def stripe_gates_cmd(client: Client, m: Message):
         brand = card_type = level = bank = country = "N/A"
         flag = ""
 
-    text_ = f"""<b>ア 𝘾𝘾 -» <code>{cc_formatted}</code>
-カ 𝙎𝙩𝙖𝙩𝙪𝙨 -» <code>{status}</code>
-ツ 𝙍𝙚𝙨𝙪𝙡𝙩 -» <code>{msg}</code>
+    text_ = f"""<b>CC</b> - <code>{cc_formatted}</code>
+<b>Status</b> - <code>{status}</code>
+<b>Result</b> - <code>{msg}</code>
 
-キ 𝘽𝙞𝙣 -» <code>{brand}</code> - <code>{card_type}</code> - <code>{level}</code>
-朱 𝘽𝙖𝙣𝙠 -» <code>{bank}</code>
-零 𝘾𝙤𝙪𝙣𝙩𝙧𝙮 -» <code>{country}</code> {flag}
+<b>BIN</b> - <code>{brand}</code> | <code>{card_type}</code> | <code>{level}</code>
+<b>Bank</b> - <code>{bank}</code>
+<b>Country</b> - <code>{country}</code> {flag}
 
-⸙ 𝙂𝙖𝙩𝙚𝙬𝙖𝙮 -» <code>{config['name']} -» {config['amount']}</code>
-꫟ 𝙏𝙞𝙢𝙚 -» <code>{final:0.3}'s</code>
-ᥫ᭡ 𝘾𝙝𝙚𝙘𝙠𝙚𝙙 𝙗𝙮 -» <a href='tg://user?id={m.from_user.id}'>{m.from_user.first_name}</a> [🌟]</b>"""
+<b>Gateway</b> - <code>{config['name']} | {config['amount']}</code>
+<b>Time</b> - <code>{final:0.3}'s</code>
+<b>Checked by</b> - <a href='tg://user?id={m.from_user.id}'>{m.from_user.first_name}</a>"""
 
     await msg_to_edit.edit(text_)

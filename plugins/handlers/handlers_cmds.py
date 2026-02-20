@@ -19,15 +19,15 @@ async def handler_gates(client: Client, callback_query: CallbackQuery):
     gates_chargeds = (
         text_gates_charged
     )
-    gates_specials = (
-        text_gates_especials
+    gates_stripe = (
+        text_gates_stripe
     )
 
     # improve in the future using database
     count_status_gates = (
         lambda text: gates_auth.count(text)
         + gates_chargeds.count(text)
-        + gates_specials.count(text)
+        + gates_stripe.count(text)
     )
     gates_on = count_status_gates("✅")
     gates_off = count_status_gates("❌")
@@ -82,24 +82,11 @@ async def handler_chargeds(client: Client, callback_query: CallbackQuery):
         )
 
 
-@Client.on_callback_query(
-    filters.regex("specials")
-    | filters.regex("specials_2")
-    | filters.regex("specials_3")
-)
-async def handler_specials(client: Client, callback_query: CallbackQuery):
-    if callback_query.data == "specials":
-        await callback_query.edit_message_text(
-            text_gates_especials, reply_markup=buttons_specials_page_1
-        )
-    elif callback_query.data == "specials_2":
-        await callback_query.edit_message_text(
-            text_gates_especials_2, reply_markup=buttons_specials_page_2
-        )
-    elif callback_query.data == "specials_3":
-        await callback_query.edit_message_text(
-            text_gates_especials_3, reply_markup=buttons_specials_page_3
-        )
+@Client.on_callback_query(filters.regex("stripes"))
+async def handler_stripes(client: Client, callback_query: CallbackQuery):
+    await callback_query.edit_message_text(
+        text_gates_stripe, reply_markup=buttons_stripe_page_1
+    )
 
 
 @Client.on_callback_query(filters.regex("tools"))

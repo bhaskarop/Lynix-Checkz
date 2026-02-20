@@ -1,20 +1,19 @@
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from utilsdf.functions import symbol
 
-text_home = """𝙒𝙚𝙡𝙘𝙤𝙢𝙚 ➤
-<code>This bot promises you fast and safe checkups with different gateways and perfect tools for your use! ✨</code>
+text_home = """<b>Welcome</b>
+<code>Fast and secure CC checker with multiple gateways and tools.</code>
                   
-<a href='tg://user?id={}'>⚡ 𝙑𝙚𝙧𝙨𝙞𝙤𝙣 </a> ➤ <code>1.3</code>"""
+<b>Version</b> - <code>1.0.0</code>"""
 
-exit_button = InlineKeyboardButton("𝙀𝙭𝙞𝙩 ⚠️", "exit")
+exit_button = InlineKeyboardButton("Exit", "exit")
 
 buttons_cmds = InlineKeyboardMarkup(
     [
         [
-            InlineKeyboardButton("𝙂𝙖𝙩𝙚𝙨 ♻️", "gates"),
-            InlineKeyboardButton("𝙏𝙤𝙤𝙡𝙨 🛠", "tools"),
+            InlineKeyboardButton("Gates", "gates"),
+            InlineKeyboardButton("Tools", "tools"),
         ],
-        [InlineKeyboardButton("𝘾𝙝𝙖𝙣𝙣𝙚𝙡 💫", url="https://t.me/bhaskargg")],
+        [InlineKeyboardButton("Channel", url="https://t.me/bhaskargg")],
         [exit_button],
     ]
 )
@@ -22,11 +21,11 @@ buttons_cmds = InlineKeyboardMarkup(
 buttons_gates = InlineKeyboardMarkup(
     [
         [
-            InlineKeyboardButton("𝘼𝙪𝙩𝙝 ", "auths"),
-            InlineKeyboardButton("𝘾𝙝𝙖𝙧𝙜𝙚𝙙 ", "chargeds"),
+            InlineKeyboardButton("Auth", "auths"),
+            InlineKeyboardButton("Charged", "chargeds"),
         ],
-        [InlineKeyboardButton("𝙎𝙥𝙚𝙘𝙞𝙖𝙡 ", "specials")],
-        [InlineKeyboardButton("𝙍𝙚𝙩𝙪𝙧𝙣 🔄", "home")],
+        [InlineKeyboardButton("Stripe", "stripes")],
+        [InlineKeyboardButton("Return", "home")],
         [exit_button],
     ]
 )
@@ -35,7 +34,7 @@ buttons_gates = InlineKeyboardMarkup(
 # RETURN & EXIT GATES
 return_and_exit_gates = InlineKeyboardMarkup(
     [
-        [InlineKeyboardButton("𝙍𝙚𝙩𝙪𝙧𝙣 🔄", "gates")],
+        [InlineKeyboardButton("Return", "gates")],
         [exit_button],
     ]
 )
@@ -43,7 +42,7 @@ return_and_exit_gates = InlineKeyboardMarkup(
 # RETURN HOME & EXIT
 return_home_and_exit = InlineKeyboardMarkup(
     [
-        [InlineKeyboardButton("𝙍𝙚𝙩𝙪𝙧𝙣 🔄", "home")],
+        [InlineKeyboardButton("Return", "home")],
         [exit_button],
     ]
 )
@@ -51,110 +50,119 @@ return_home_and_exit = InlineKeyboardMarkup(
 
 # GATES AUTH
 
-text_gates_auth = f"""
-𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘼𝙪𝙩𝙝
+text_gates_auth = """
+<b>Gateways - Auth</b>
 
-{symbol("⚡ 𝑜𝑑𝑎𝑙𝑖")} ➤ <code>Shopify -» Auth</code>
-{symbol("💎 𝘾𝙢𝙙")} ➤ <code>.od</code> ➤ <code>Premium</code>
-{symbol("✦ 𝙎𝙩𝙖𝙩𝙪𝙨")} ➤ <code>On ✅</code>
+<code>Odali</code> - Shopify Auth
+  Cmd: <code>.od</code> | Premium
+  Status: <code>On</code>
 
-{symbol("⚡ 𝙄𝙩𝙖𝙘𝙝𝙞")} ➤ <code>Payflow Avs codes -» Auth</code>
-{symbol("💎 𝘾𝙢𝙙")} ➤ <code>.it</code> ➤ <code>Premium</code>
-{symbol("✦ 𝙎𝙩𝙖𝙩𝙪𝙨")} ➤ <code>On ✅</code>
+<code>Itachi</code> - Payflow Avs Auth
+  Cmd: <code>.it</code> | Premium
+  Status: <code>On</code>
 """
 
 buttons_auth_page_1 = InlineKeyboardMarkup(
     [
-        [InlineKeyboardButton("𝙍𝙚𝙩𝙪𝙧𝙣 🔄", "home")],
+        [InlineKeyboardButton("Return", "gates")],
+        [exit_button],
     ]
 )
 
 # GATES CHARGED
 
-text_gates_charged = f"""
-𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝘾𝙝𝙖𝙧𝙜𝙚𝙙
+text_gates_charged = """
+<b>Gateways - Charged</b>
 
-𝙋𝙖𝙜 ➤ <code>1</code>
+<code>PayPal</code> - $0.01
+  Cmd: <code>.pp</code> | Free
+  Status: <code>On</code>
 
-{symbol("⚡ 𝙋𝙖𝙮𝙋𝙖𝙡")} ➤ <code>PayPal -» $0.01</code>
-{symbol("💎 𝘾𝙢𝙙")} ➤ <code>.pp</code> ➤ <code>Free</code>
-{symbol("✦ 𝙎𝙩𝙖𝙩𝙪𝙨")} ➤ <code>On ✅</code>
+<code>PayPal</code> - $1
+  Cmd: <code>.ppa</code> | Free
+  Status: <code>On</code>
 
-{symbol("⚡ 𝙋𝙖𝙮𝙋𝙖𝙡")} ➤ <code>PayPal -» $1</code>
-{symbol("💎 𝘾𝙢𝙙")} ➤ <code>.ppa</code> ➤ <code>Free</code>
-{symbol("✦ 𝙎𝙩𝙖𝙩𝙪𝙨")} ➤ <code>On ✅</code>
+<code>Ghoul</code> - SquareUp $10
+  Cmd: <code>.gh</code> | Premium
+  Status: <code>On</code>
 
-{symbol("⚡ 𝙂𝙝𝙤𝙪𝙡")} ➤ <code>SquareUp -» $10</code>
-{symbol("💎 𝘾𝙢𝙙")} ➤ <code>.gh</code> ➤ <code>Premium</code>
-{symbol("✦ 𝙎𝙩𝙖𝙩𝙪𝙨")} ➤ <code>On ✅</code>
-
-{symbol("⚡ 𝘽𝙧𝙚𝙣𝙙𝙖 ")} ➤ <code>Onrally + Braintree -» $28.99</code>
-{symbol("💎 𝘾𝙢𝙙")} ➤ <code>.br</code> ➤ <code>Premium</code>
-{symbol("✦ 𝙎𝙩𝙖𝙩𝙪𝙨")} ➤ <code>On ✅</code>
+<code>Brenda</code> - Braintree $28.99
+  Cmd: <code>.br</code> | Premium
+  Status: <code>On</code>
 """
 buttons_charged_page_1 = InlineKeyboardMarkup(
     [
-        [InlineKeyboardButton("𝙍𝙚𝙩𝙪𝙧𝙣 🔄", "home")],
+        [InlineKeyboardButton("Return", "gates")],
+        [exit_button],
     ]
 )
 
-# GATES SPECIALS
-text_gates_especials = f"""𝙂𝙖𝙩𝙚𝙬𝙖𝙮𝙨 𝙎𝙥𝙚𝙘𝙞𝙖𝙡
+# GATES STRIPE
+text_gates_stripe = """
+<b>Gateways - Stripe</b>
 
-{symbol("⚡ 𝙊𝙧𝙤𝙘𝙝𝙞𝙢𝙖𝙧𝙪")} ➤ <code>Stripe[Ccn] -» $1</code>
-{symbol("💎 𝘾𝙢𝙙")} ➤ <code>.or</code> ➤ <code>Premium</code>
-{symbol("✦ 𝙎𝙩𝙖𝙩𝙪𝙨")} ➤ <code>On ✅</code>
+<code>Stripe</code> - Auth $0
+  Cmd: <code>.stripe</code> | Free
+  Status: <code>On</code>
 
-{symbol("⚡ 𝘽𝙤𝙧𝙪𝙩𝙤")} ➤ <code>Stripe[Ccn] -» $26.29</code>
-{symbol("💎 𝘾𝙢𝙙")} ➤ <code>.bo</code> ➤ <code>Premium</code>
-{symbol("✦ 𝙎𝙩𝙖𝙩𝙪𝙨")} ➤ <code>On ✅</code>
+<code>Stripe 1</code> - Charge $1
+  Cmd: <code>.stripe1</code> | Premium
+  Status: <code>On</code>
+
+<code>Stripe 2</code> - Billing $1
+  Cmd: <code>.stripe2</code> | Premium
+  Status: <code>On</code>
+
+<code>Stripe 3</code> - Checkout $0.50
+  Cmd: <code>.stripe3</code> | Premium
+  Status: <code>On</code>
+
+<code>Stripe 4</code> - Billing $2
+  Cmd: <code>.stripe4</code> | Premium
+  Status: <code>On</code>
+
+<code>Stripe 5</code> - Charge $5
+  Cmd: <code>.stripe5</code> | Premium
+  Status: <code>On</code>
 """
-buttons_specials_page_1 = InlineKeyboardMarkup(
+buttons_stripe_page_1 = InlineKeyboardMarkup(
     [
-        [InlineKeyboardButton("𝙍𝙚𝙩𝙪𝙧𝙣 🔄", "home")],
+        [InlineKeyboardButton("Return", "gates")],
+        [exit_button],
     ]
 )
 
 # TOOLS
-text_tools = f"""
-𝙏𝙤𝙤𝙡𝙨 🛠
+text_tools = """
+<b>Tools</b>
 
-{symbol("⚡ 𝙍𝙚𝙛𝙚")} ➤ <code>send review reference</code>
-{symbol("💎 𝘾𝙢𝙙")} ➤ <code>.refe -» reply message</code> ➤ <code>Free</code>
-{symbol("✦ 𝙎𝙩𝙖𝙩𝙪𝙨")} ➤ <code>On ✅</code>
+<code>Refe</code> - Send review reference
+  Cmd: <code>.refe</code> (reply to msg) | Free
 
-{symbol("⚡ 𝘽𝙞𝙣")} ➤ <code>info bin</code>
-{symbol("💎 𝘾𝙢𝙙")} ➤ <code>.bin</code> ➤ <code>Free</code>
-{symbol("✦ 𝙎𝙩𝙖𝙩𝙪𝙨")} ➤ <code>On ✅</code>
+<code>Bin</code> - BIN lookup
+  Cmd: <code>.bin</code> | Free
 
-{symbol("⚡ 𝘾𝙝𝙖𝙩 𝙂𝙋𝙏")} ➤ <code>ChatGPT</code>
-{symbol("💎 𝘾𝙢𝙙")} ➤ <code>.gpt hola</code> ➤ <code>Premium</code>
-{symbol("✦ 𝙎𝙩𝙖𝙩𝙪𝙨")} ➤ <code>On ✅</code>
+<code>ChatGPT</code> - AI chat
+  Cmd: <code>.gpt</code> | Premium
 
-{symbol("⚡ 𝘼𝙙𝙙𝙧𝙚𝙨𝙨")} ➤ <code>generate address</code>
-{symbol("💎 𝘾𝙢𝙙")} ➤ <code>.rnd us</code> ➤ <code>Free</code>
-{symbol("✦ 𝙎𝙩𝙖𝙩𝙪𝙨")} ➤ <code>On ✅</code>
+<code>Address</code> - Generate address
+  Cmd: <code>.rnd us</code> | Free
 
-{symbol("⚡ 𝙎𝙠")} ➤ <code>info sk</code>
-{symbol("💎 𝘾𝙢𝙙")} ➤ <code>.sk</code> ➤ <code>Free</code>
-{symbol("✦ 𝙎𝙩𝙖𝙩𝙪𝙨")} ➤ <code>On ✅</code>
+<code>SK</code> - Stripe key info
+  Cmd: <code>.sk</code> | Free
 
-{symbol("⚡ 𝙂𝘽𝙞𝙣")} ➤ <code>generate bins</code>
-{symbol("💎 𝘾𝙢𝙙")} ➤ <code>.gbin</code> ➤ <code>Free</code>
-{symbol("✦ 𝙎𝙩𝙖𝙩𝙪𝙨")} ➤ <code>On ✅</code>
+<code>GBin</code> - Generate BINs
+  Cmd: <code>.gbin</code> | Free
 
-{symbol("⚡ 𝘾𝘾 𝙂𝙚𝙣")} ➤ <code>generate ccs</code>
-{symbol("💎 𝘾𝙢𝙙")} ➤ <code>.gen</code> ➤ <code>Free</code>
-{symbol("✦ 𝙎𝙩𝙖𝙩𝙪𝙨")} ➤ <code>On ✅</code>
+<code>CC Gen</code> - Generate CCs (Luhn)
+  Cmd: <code>.gen</code> | Free
 
-{symbol("⚡ 𝙄𝙣𝙛𝙤")} ➤ <code>info user</code>
-{symbol("💎 𝘾𝙢𝙙")} ➤ <code>.my</code> ➤ <code>Free</code>
-{symbol("✦ 𝙎𝙩𝙖𝙩𝙪𝙨")} ➤ <code>On ✅</code>
+<code>Info</code> - User info
+  Cmd: <code>.my</code> | Free
 
-{symbol("⚡ 𝙋𝙡𝙖𝙣")} ➤ <code>info plan user</code>
-{symbol("💎 𝘾𝙢𝙙")} ➤ <code>.plan</code> ➤ <code>Free</code>
-{symbol("✦ 𝙎𝙩𝙖𝙩𝙪𝙨")} ➤ <code>On ✅</code>
+<code>Plan</code> - User plan
+  Cmd: <code>.plan</code> | Free
 
-{symbol("⚡ 𝙋𝙡𝙖𝙣𝙂")} ➤ <code>info plan group</code>
-{symbol("💎 𝘾𝙢𝙙")} ➤ <code>.plang</code> ➤ <code>Free</code>
-{symbol("✦ 𝙎𝙩𝙖𝙩𝙪𝙨")} ➤ <code>On ✅</code>"""
+<code>PlanG</code> - Group plan
+  Cmd: <code>.plang</code> | Free
+"""

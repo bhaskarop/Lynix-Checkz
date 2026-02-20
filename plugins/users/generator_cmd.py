@@ -21,11 +21,9 @@ buttons = InlineKeyboardMarkup(
     ]
 )
 
-INVALID_FORMAT_MSG = """<b>System Akatsuki -»>_
+INVALID_FORMAT_MSG = """<b>Invalid BIN format.
 
-𝘽𝙞𝙣 -» <code>Invalid! ⚠</code>
-
-𝙁𝙤𝙧𝙢𝙖𝙩 -» <code>.gen 400002xxxxxxxxxx|10|2024|xxx</code></b>"""
+Format: <code>.gen 400002xxxxxxxxxx|10|2024|xxx</code></b>"""
 
 
 @Client.on_message(filters.command("gen", PREFIXES))
@@ -62,9 +60,9 @@ async def Gen_cmd(client: Client, m: Message):
     if resp:
         info_bin = generate_info_bin_text(resp)
     else:
-        info_bin = """𝙄𝙣𝙛𝙤 -» <code>N/A</code> - <code>N/A</code> - <code>N/A</code>
-𝘽𝙖𝙣𝙠 -» <code>N/A</code>
-𝘾𝙤𝙪𝙣𝙩𝙧𝙮 -» <code>N/A</code>"""
+        info_bin = """<b>Info</b> - <code>N/A</code> | <code>N/A</code> | <code>N/A</code>
+<b>Bank</b> - <code>N/A</code>
+<b>Country</b> - <code>N/A</code>"""
 
     response_text = generate_response_text(
         extra_final,
@@ -102,9 +100,9 @@ async def regen_call(client: Client, callback_query: CallbackQuery):
     if resp:
         info_bin = generate_info_bin_text(resp)
     else:
-        info_bin = """𝙄𝙣𝙛𝙤 -» <code>N/A</code> - <code>N/A</code> - <code>N/A</code>
-𝘽𝙖𝙣𝙠 -» <code>N/A</code>
-𝘾𝙤𝙪𝙣𝙩𝙧𝙮 -» <code>N/A</code>"""
+        info_bin = """<b>Info</b> - <code>N/A</code> | <code>N/A</code> | <code>N/A</code>
+<b>Bank</b> - <code>N/A</code>
+<b>Country</b> - <code>N/A</code>"""
 
     formmated_ccs = "\n".join([f"<code>{cc}</code>" for cc in ccs])
     with Database() as db:
@@ -131,20 +129,20 @@ def generate_info_bin_text(resp):
     level = resp["level"] if resp["level"] else "UNAVAILABLE"
     typea = resp["type"] if resp["type"] else "UNAVAILABLE"
     return f"""             
-𝙄𝙣𝙛𝙤 -» <code>{brand}</code> - <code>{typea}</code> - <code>{level}</code>
-𝘽𝙖𝙣𝙠 -» <code>{bank}</code>
-𝘾𝙤𝙪𝙣𝙩𝙧𝙮 -» <code>{country_name}</code> {country_flag}
+<b>Info</b> - <code>{brand}</code> | <code>{typea}</code> | <code>{level}</code>
+<b>Bank</b> - <code>{bank}</code>
+<b>Country</b> - <code>{country_name}</code> {country_flag}
 """.strip()
 
 
 def generate_response_text(
     extra_final, ccs_generateds, bin_info, user_id, first_name, rol
 ):
-    return f"""𝘽𝙞𝙣 -» <code>{extra_final}</code>
-- - - - - - - - - - - - - - - - - - - - -
+    return f"""<b>BIN</b> - <code>{extra_final}</code>
+
 {ccs_generateds.strip()}
-- - - - - - - - - - - - - - - - - - - - -
+
 {bin_info}
-- - - - - - - - - - - - - - - - - - - - -
-𝙂𝙚𝙣 𝙗𝙮 -» <a href='tg://user?id={user_id}'>{first_name}</a> -» <code>{rol}</code>                       
-</b>"""
+
+<b>Gen by</b> - <a href='tg://user?id={user_id}'>{first_name}</a> | <code>{rol}</code>
+"""

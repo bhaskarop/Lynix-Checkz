@@ -374,7 +374,7 @@ def get_cc(text: str) -> bool | list:
                 and int(num) in range(short_year, short_year + 20)
             ):
                 ano = num
-            elif num in Generator.generate_cvv("000", "9999"):
+            elif len(num) in (3, 4) and num.isdigit():
                 cvv = num
     else:
         return False

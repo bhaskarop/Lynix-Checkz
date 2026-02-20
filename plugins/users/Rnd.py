@@ -8,44 +8,44 @@ from utilsdf.vars import PREFIXES
 
 @Client.on_message(filters.command("rnd", PREFIXES))
 async def rnd(client: Client, m: Message):
- user_id = m.from_user.id
- with Database() as db:
- if not db.is_authorized(user_id):
- return await m.reply(
- "This chat is not approved to use this bot.", quote=True
- )
- # user_info = db.GetInfoUser(user_id)
- text = m.text[len(m.command[0]) + 2 :].strip()
+    user_id = m.from_user.id
+    with Database() as db:
+        if not db.is_authorized(user_id):
+            return await m.reply(
+                "This chat is not approved to use this bot.", quote=True
+            )
+        # user_info = db.GetInfoUser(user_id)
+    text = m.text[len(m.command[0]) + 2 :].strip()
 
- data = await get_rand_info(text)
- if not data or not data["status"]:
- return await m.reply(get_adresses())
+    data = await get_rand_info(text)
+    if not data or not data["status"]:
+        return await m.reply(get_adresses())
 
- # domain = data["domain"]
- # nat = data["nat"]
- street = data["street"]
- city = data["city"]
- state = data["state"]
- phone = data["phone"]
- # phone1 = data["phone1"]
- zip_code = data["zip"]
- country = data["country"]
- emoji = data["emoji"]
+    # domain = data["domain"]
+    # nat = data["nat"]
+    street = data["street"]
+    city = data["city"]
+    state = data["state"]
+    phone = data["phone"]
+    # phone1 = data["phone1"]
+    zip_code = data["zip"]
+    country = data["country"]
+    emoji = data["emoji"]
 
- await m.reply(
- f""" State - <code>{state}</code>
-亥 City - <code>{city}</code>
+    await m.reply(
+        f"""State -  <code>{state}</code>
+亥 City -  <code>{city}</code>
 亥 Street - <code>{street}</code>
 
 空 Country - <code>{country}</code> {emoji}
 栗 Phone - <code>{phone}</code>
 北 Zip - <code>{zip_code}</code>""",
- quote=True,
- )
+        quote=True,
+    )
 
 
 def get_adresses() -> str:
- return """
+    return """
 Albania - al 🇦🇱
 Algeria - dz 🇩🇿
 Argentina - ar 🇦🇷
@@ -70,7 +70,7 @@ Chile - cl 🇨🇱
 Colombia - co 🇨🇴
 China - cn 🇨🇳
 Costa Rica - cr 🇨🇷
-Croatia - hr 🇭🇷
+Croatia - hr  🇭🇷
 Cuba - cu 🇨🇺
 Cyprus - cy 🇨🇾
 Denmark - dk 🇩🇰 

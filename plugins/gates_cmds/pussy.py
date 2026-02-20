@@ -3,11 +3,11 @@ from pyromod import Client
 from pyrogram.types import Message
 from utilsdf.db import Database
 from utilsdf.functions import (
- get_bin_info,
- get_cc,
- antispam,
- get_text_from_pyrogram,
- user_not_premium,
+    get_bin_info,
+    get_cc,
+    antispam,
+    get_text_from_pyrogram,
+    user_not_premium,
 )
 from utilsdf.woocomerce_funcs import b3_wc
 from utilsdf.vars import PREFIXES
@@ -16,52 +16,52 @@ from time import perf_counter
 
 @Client.on_message(filters.command("ps", PREFIXES))
 async def ps(client: Client, m: Message):
- user_id = m.from_user.id
- with Database() as db:
- if not db.is_premium(user_id):
- await user_not_premium(m)
- return
- user_info = db.get_info_user(user_id)
- text = get_text_from_pyrogram(m)
- ccs = get_cc(text)
- if not ccs:
- return await m.reply(
- "Gateway Pussy<code> - Auth</code>\nFormat - <code>/ps cc|month|year|cvc</code>",
- quote=True,
- )
- ini = perf_counter()
- cc = ccs[0]
- mes = ccs[1]
- ano = ccs[2]
- cvv = ccs[3]
+    user_id = m.from_user.id
+    with Database() as db:
+        if not db.is_premium(user_id):
+            await user_not_premium(m)
+            return
+        user_info = db.get_info_user(user_id)
+    text = get_text_from_pyrogram(m)
+    ccs = get_cc(text)
+    if not ccs:
+        return await m.reply(
+            "Gateway Pussy<code> - Auth</code>\nFormat - <code>/ps cc|month|year|cvc</code>",
+            quote=True,
+        )
+    ini = perf_counter()
+    cc = ccs[0]
+    mes = ccs[1]
+    ano = ccs[2]
+    cvv = ccs[3]
 
 
 
- # check antispam
- antispam_result = antispam(user_id, user_info["ANTISPAM"])
- if antispam_result != False:
- return await m.reply(
- f"Please Wait... - <code>{antispam_result}'s</code>", quote=True
- )
- msg_to_edit = await m.reply("Please Wait...", quote=True)
- cc_formatted = f"{cc}|{mes}|{ano}|{cvv}"
+    # check antispam
+    antispam_result = antispam(user_id, user_info["ANTISPAM"])
+    if antispam_result != False:
+        return await m.reply(
+            f"Please Wait... - <code>{antispam_result}'s</code>", quote=True
+        )
+    msg_to_edit = await m.reply("Please Wait...", quote=True)
+    cc_formatted = f"{cc}|{mes}|{ano}|{cvv}"
 
- status, result = await b3_wc(cc, mes, ano, cvv, "podolskacoaching.com")
+    status, result = await b3_wc(cc, mes, ano, cvv, "podolskacoaching.com")
 
- final = perf_counter() - ini
- with Database() as db:
- db.increase_checks(user_id)
+    final = perf_counter() - ini
+    with Database() as db:
+        db.increase_checks(user_id)
 
- text_ = f"""<b> CC - <code>{cc_formatted}</code>
- Status - <code>{status}</code>
- Result - <code>{result}</code>
+    text_ = f"""<b>CC - <code>{cc_formatted}</code>
+Status - <code>{status}</code>
+Result - <code>{result}</code>
 
- Bin - <code></code> - <code></code> - <code></code>
- Bank - <code></code>
- Country - <code></code> 
+Bin - <code></code> - <code></code> - <code></code>
+Bank - <code></code>
+Country - <code></code> 
 
- Gateway - <code>Pussy - Auth</code>
- Time - <code>{final:0.3}'s</code>
- Checked by - <a href='tg://user?id={m.from_user.id}'>{m.from_user.first_name}</a> [S]</b>"""
+Gateway - <code>Pussy - Auth</code>
+Time - <code>{final:0.3}'s</code>
+Checked by - <a href='tg://user?id={m.from_user.id}'>{m.from_user.first_name}</a> [S]</b>"""
 
- await msg_to_edit.edit(text_)
+    await msg_to_edit.edit(text_)

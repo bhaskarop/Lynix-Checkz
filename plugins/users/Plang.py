@@ -7,17 +7,17 @@ from utilsdf.vars import PREFIXES
 
 @Client.on_message(filters.command(["plang"], PREFIXES))
 async def id_chat(client: Client, m: Message):
- chat_id = m.chat.id
- chat_name = m.chat.title
- chat_type = m.chat.type
- with Database() as db:
- chat_info = db.get_info_group(chat_id)
- authorized = "Authorized" if chat_info else "No Authorized"
- expiration = f"\nExp - <code>{chat_info['EXPIRATION']}</code>" if chat_info else ""
- text = f"""
+    chat_id = m.chat.id
+    chat_name = m.chat.title
+    chat_type = m.chat.type
+    with Database() as db:
+        chat_info = db.get_info_group(chat_id)
+    authorized = "Authorized" if chat_info else "No Authorized"
+    expiration = f"\nExp - <code>{chat_info['EXPIRATION']}</code>" if chat_info else ""
+    text = f"""
 Id - <code>{chat_id}</code>
 Name - <code>{chat_name}</code>
 Type - <code>{str(chat_type).replace("ChatType.", "").lower()}</code>
 Plan - <code>{authorized}</code> {expiration}
 """
- await m.reply(text, quote=True, disable_web_page_preview=True)
+    await m.reply(text, quote=True, disable_web_page_preview=True)

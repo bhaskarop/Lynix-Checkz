@@ -10,27 +10,27 @@ FORMAT_CMD = "<b>Format: <code>/nick USER_ID NICK</code></b>"
 
 @Client.on_message(filters.command("nick", PREFIXES))
 async def nick(client: Client, m: Message):
-    user_id = m.from_user.id
-    with Database() as db:
-        if not db.is_admin(user_id):
-            return
-        text = m.text[len(m.command[0]) + 2 :].strip()
-        data_split = text.split(" ")
-        if len(data_split) < 2:
-            return await m.reply(FORMAT_CMD, quote=True)
-        id = data_split[0]
-        nick = " ".join(data_split[1:])
-        if not id.isdigit():
-            return await m.reply(FORMAT_CMD, quote=True)
-        result = db.set_nick(id, nick)
-        if result is None:
-            return await m.reply(
-                "<b>The ID is not found in the database!\nAsk the user to talk to the bot!</b>",
-                quote=True,
-            )
-        await m.reply(
-            f"""<b>
+ user_id = m.from_user.id
+ with Database() as db:
+ if not db.is_admin(user_id):
+ return
+ text = m.text[len(m.command[0]) + 2 :].strip()
+ data_split = text.split(" ")
+ if len(data_split) < 2:
+ return await m.reply(FORMAT_CMD, quote=True)
+ id = data_split[0]
+ nick = " ".join(data_split[1:])
+ if not id.isdigit():
+ return await m.reply(FORMAT_CMD, quote=True)
+ result = db.set_nick(id, nick)
+ if result is None:
+ return await m.reply(
+ "<b>The ID is not found in the database!\nAsk the user to talk to the bot!</b>",
+ quote=True,
+ )
+ await m.reply(
+ f"""<b>
 The ID <code>{id}</code> has the nick: <code>{nick}</code>
 </b>""",
-            quote=True,
-        )
+ quote=True,
+ )

@@ -12,9 +12,9 @@ INVALID_REFE = "<b>You must reply to a valid reference</b>"
 
 @Client.on_message(filters.command("refe", PREFIXES))
 async def refe(client: Client, m: Message):
-    message = m.reply_to_message
-    if not message or not message.media:
-        return await m.reply(INVALID_REFE, quote=True)
+ message = m.reply_to_message
+ if not message or not message.media:
+ return await m.reply(INVALID_REFE, quote=True)
 
-    await client.forward_messages(REFES_CHAT, m.chat.id, message.id)
-    await m.reply("𝙍𝙚𝙛𝙚𝙧𝙚𝙣𝙘𝙚 𝙪𝙣𝙙𝙚𝙧 𝙧𝙚𝙫𝙞𝙚𝙬", reply_to_message_id=message.id)
+ await client.forward_messages(REFES_CHAT, m.chat.id, message.id)
+ await m.reply("Reference under review", reply_to_message_id=message.id)

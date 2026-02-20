@@ -1,0 +1,104 @@
+import logging
+import asyncio
+
+# Fix for Python 3.12+ where get_event_loop() no longer auto-creates a loop
+try:
+    asyncio.get_event_loop()
+except RuntimeError:
+    asyncio.set_event_loop(asyncio.new_event_loop())
+
+from pyromod import Client
+from pyrogram import filters
+from pyrogram.enums import ParseMode, ChatMemberStatus
+from pyrogram.types import CallbackQuery, Message
+from utilsdf.functions import bot_on
+from utilsdf.db import Database
+from utilsdf.vars import PREFIXES
+    
+API_ID = '28119811'
+API_HASH = '19b0bdc4831d4d11fe890886c087a167'
+BOT_TOKEN = '8572951970:AAGxko2u_oquVn6f9-pJ-rW-8yvR-XBMHKg'
+CHANNEL_LOGS = '-1003642791388'
+
+app = Client(
+    "bot",
+    api_id=API_ID,
+    api_hash=API_HASH,
+    bot_token=BOT_TOKEN,
+    plugins=dict(root="plugins"),
+    parse_mode=ParseMode.HTML,
+)
+
+bot_on()
+logging.basicConfig(level=logging.INFO)
+logging.getLogger("httpx").setLevel(logging.CRITICAL)
+
+
+@app.on_callback_query()
+async def warn_user(client: Client, callback_query: CallbackQuery):
+    if (
+        callback_query.message.reply_to_message
+        and callback_query.message.reply_to_message.from_user
+        and callback_query.from_user.id
+        != callback_query.message.reply_to_message.from_user.id
+    ):
+        await callback_query.answer("Usa tu menu! ⚠️", show_alert=True)
+        return
+    await callback_query.continue_propagation()
+
+
+@app.on_message(filters.text)
+async def user_ban(client: Client, m: Message):
+
+    if not m.from_user:
+        return
+    if not m.text:
+        return
+    try:
+        if not m.text[0] in PREFIXES:
+            return
+    except UnicodeDecodeError:
+        return
+    chat_id = m.chat.id
+    with Database() as db:
+        if chat_id == -1001897182152:
+            async for member in m.chat.get_members():
+                if not member.user:
+                    continue
+                if member.status == ChatMemberStatus.ADMINISTRATOR:
+                    continue
+                user_id = member.user.id
+                if db.is_seller_or_admin(user_id):
+                    continue
+                is_premium = db.is_premium(user_id)
+                if is_premium:
+                    continue
+                if db.user_has_credits(user_id):
+                    continue
+                await m.chat.ban_member(user_id)
+                info=db.get_info_user(user_id)
+                await client.send_message(-1001897182152, f"<b>User removed: @{info['USERNAME']}</b>")
+
+        #         if not db.is_admin(m.from_user.id):
+        #             return await m.reply(
+        #                 """𝘽𝙤𝙩 𝙪𝙣𝙙𝙚𝙧 𝙈𝙖𝙣𝙩𝙚𝙣𝙞𝙚𝙣𝙘𝙚 ⚠️
+        # 𝙍𝙚𝙖𝙨𝙤𝙣 -» <code>Lynix Checker ⚡</code>
+        #        """
+        #             )
+        user_id = m.from_user.id
+        username = m.from_user.username
+        db.remove_expireds_users()
+        banned = db.is_ban(user_id)
+        if banned:
+            return
+        db.register_user(user_id, username)
+        if not db.is_authorized(user_id):
+            return await m.reply(
+                "<b>⚠️ You are not authorized to use this bot.\nContact the owner for access → @bhaskargg</b>",
+                quote=True,
+            )
+        await m.continue_propagation()
+
+
+if __name__ == "__main__":
+    app.run()

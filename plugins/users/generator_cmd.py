@@ -53,17 +53,18 @@ async def Gen_cmd(client: Client, m: Message):
     cvv = input_cc[3] if input_cc[3] else "rnd"
     extra_final = f"{extra_cc}|{input_cc[1]}|{input_cc[2]}|{cvv}"
     resp = await get_bin_info(input_cc[0][0:6])
-    if resp is None:
-        return await m.reply(
-            "<b>No results found for this BIN!</b>", quote=True
-        )
     ccs_generateds_unformatted = generator.generate_ccs()
     formmated_ccs = "\n".join(
         [f"<code>{cc}</code>" for cc in ccs_generateds_unformatted]
     )
 
     rol = user_info["RANK"].capitalize()
-    info_bin = generate_info_bin_text(resp)
+    if resp:
+        info_bin = generate_info_bin_text(resp)
+    else:
+        info_bin = """𝙄𝙣𝙛𝙤 -» <code>N/A</code> - <code>N/A</code> - <code>N/A</code>
+𝘽𝙖𝙣𝙠 -» <code>N/A</code>
+𝘾𝙤𝙪𝙣𝙩𝙧𝙮 -» <code>N/A</code>"""
 
     response_text = generate_response_text(
         extra_final,
@@ -98,7 +99,12 @@ async def regen_call(client: Client, callback_query: CallbackQuery):
     ccs = generator.generate_ccs()
     resp = await get_bin_info(ccf[0:6])
 
-    info_bin = generate_info_bin_text(resp)
+    if resp:
+        info_bin = generate_info_bin_text(resp)
+    else:
+        info_bin = """𝙄𝙣𝙛𝙤 -» <code>N/A</code> - <code>N/A</code> - <code>N/A</code>
+𝘽𝙖𝙣𝙠 -» <code>N/A</code>
+𝘾𝙤𝙪𝙣𝙩𝙧𝙮 -» <code>N/A</code>"""
 
     formmated_ccs = "\n".join([f"<code>{cc}</code>" for cc in ccs])
     with Database() as db:
